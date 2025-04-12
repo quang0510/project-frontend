@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="Website Icon"
+      type="png"
+      href="./Assets/icons/logo-coin-index.png"
+    />
+    <title>Quản lý tài chính cá nhân</title>
+    <link rel="stylesheet" href="./CSS/index.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- header -->
+      <header>
+        <h3>📒 Tài Chính Cá Nhân K24_Rikkei</h3>
+        <a id="logOut" href="../pages/login.html"
+          >Đăng xuất <ion-icon id="icon" name="log-out-outline"></ion-icon
+        ></a>
+      </header>
+      <!-- banner -->
+      <section class="banner">
+        <p class="banner-1">🎯 Kiểm soát chi tiêu thông minh</p>
+        <p class="banner-2">Theo dõi ngân sách và thu chi hằng tháng dễ dàng</p>
+      </section>
+      <!-- Main -->
+      <main>
+        <p class="title">📊 Quản Lý Tài Chính Cá Nhân</p>
+        <!-- Chọn Tháng -->
+        <div class="month">
+          <form>
+            <label for="month">📅 Chọn tháng:</label>
+            <input type="month" name="month" id="monthInput" />
+          </form>
+        </div>
+        <!-- Ngân sách tháng-->
+        <div class="budget">
+          <form>
+            <label for="budget">💰 Ngân sách tháng:</label>
+            <input
+              type="number"
+              name="budget"
+              id="budgetInput"
+              placeholder="VD:  800,000 VND"
+            />
+            <button id="saveButton" type="button">Lưu</button>
+          </form>
+        </div>
+        <!-- Số tiền còn lại -->
+        <div class="remainAmount">
+          <p>Số tiền còn lại</p>
+          <p id="remainAmount">0 VND</p>
+        </div>
+        <!-- Quản lý danh mục theo tháng -->
+        <div class="categoryManagement">
+          <p>💼 Quản lý danh mục (theo tháng)</p>
+          <form>
+            <input
+              class="categoryInput"
+              type="text"
+              name="categoryName"
+              id="categoryNameInput"
+              placeholder="Tên danh mục"
+            />
+            <input
+              class="categoryInput"
+              type="number"
+              name="limit"
+              id="limitInput"
+              placeholder="Giới hạn (VND)"
+            />
+            <button id="addCategory" class="categoryInput" type="button">
+              Thêm danh mục
+            </button>
+          </form>
+          <section class="categoryList">
+            <ul id="categoryList"></ul>
+          </section>
+        </div>
+        <!-- quản lý chi tiêu -->
+        <div class="addSpending">
+          <form>
+            <input
+              class="addSpendingManage"
+              type="number"
+              name="money"
+              id="spendingMoneyInput"
+              placeholder="Số tiền"
+            />
+            <select
+              class="addSpendingManage"
+              name="spendingOption"
+              id="spendingOption"
+            >
+              <option value="1">Tiền chi tiêu</option>
+            </select>
+            <input
+              class="addSpendingManage"
+              type="text"
+              name="note"
+              id="spendingNoteInput"
+              placeholder="Ghi chú"
+            />
+            <button id="addSpending" class="addSpendingManage" type="button">
+              Thêm
+            </button>
+          </form>
+        </div>
+        <!-- lịch sử giao dịch -->
+        <div class="history">
+          <p class="title">🧾 Lịch sử giao dịch</p>
+          <form>
+            <input
+              type="text"
+              name="search"
+              id="searchHistoryInput"
+              placeholder="Tìm nội dung"
+            />
+            <button
+              style="background-color: #1d4ed8"
+              id="submitHistoryButton"
+              class="btn btn-primary"
+              type="button"
+            >
+              <i class="bi bi-search"></i>
+            </button>
+            <select name="sort" id="sort">
+              <option value="1">Sắp xếp theo giá</option>
+              <option value="2">Tăng dần</option>
+              <option value="3">Giảm dần</option>
+            </select>
+          </form>
+          <br />
+
+          <!-- Danh sách lịch sử -->
+          <section class="historyList">
+            <ul id="historyList"></ul>
+          </section>
+          <!-- Phần phân trang -->
+          <section id="pagination">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link">Previous</a></li>
+              <li class="page-item"><a class="page-link">1</a></li>
+              <li class="page-item"><a class="page-link">2</a></li>
+              <li class="page-item"><a class="page-link">3</a></li>
+              <li class="page-item"><a class="page-link">Next</a></li>
+            </ul>
+          </section>
+        </div>
+
+        <!-- Cảnh báo vượt mức -->
+        <div class="error">
+          <p>
+            <ion-icon name="warning-outline"></ion-icon> Cảnh báo vượt mức giới
+            hạn
+          </p>
+          <div id="warning" style="display: none">
+            <ul id="warning-list"></ul>
+          </div>
+        </div>
+      </main>
+
+      <!-- Thống kê chi tiêu các tháng -->
+      <div class="statistical">
+        <p>📆 Thống kê chi tiêu các tháng</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <td scope="col">Tháng</td>
+              <td scope="col">Chi tiêu</td>
+              <td scope="col">Ngân sách</td>
+              <td scope="col">Trạng thái</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-03</td>
+              <td>2,150,000 VND</td>
+              <td>5,000,000</td>
+              <td class="reachTarget">✅ Đạt</td>
+            </tr>
+            <tr>
+              <td>2025-04</td>
+              <td>3,100,000 VND</td>
+              <td>3,000,000</td>
+              <td class="excess">❌ Vượt</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer -->
+      <footer>
+        <span>&copy; 2025 Quản Lý Tài Chính Cá Nhân by Đăng Quang !</span>
+      </footer>
+    </div>
+    <script src="./JS/index.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

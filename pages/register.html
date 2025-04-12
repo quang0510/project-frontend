@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="Website Icon"
+      type="png"
+      href="../Assets/icons/logo-logout.png"
+    />
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="../css/register.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Đăng ký tài khoản</h1>
+      <form method="post" id="form">
+        <div class="form-group">
+          <input
+            type="text"
+            name="username"
+            id="usernameInput"
+            placeholder="Tên đăng nhập"
+          />
+          <p class="error">Tên tài khoản đã tồn tại</p>
+          <p class="errorEmpty">Tên đăng nhập không được bỏ trống</p>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            name="password"
+            id="passwordInput"
+            placeholder="Mật khẩu"
+          />
+          <p class="error">Mật khẩu không hợp lệ</p>
+          <p class="errorEmpty">Mật khẩu không được bỏ trống</p>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPasswordInput"
+            placeholder="Xác nhận Mật khẩu"
+          />
+          <p class="error">Xác nhận mật khẩu không hợp lệ</p>
+          <p class="errorEmpty">Xác nhận mật khẩu không được bỏ trống</p>
+        </div>
+        <div class="form-group">
+          <button type="submit" id="registerButton">Đăng ký</button>
+        </div>
+        <footer>
+          <p>Đã có tài khoản <a href="./login.html">Đăng nhập</a></p>
+        </footer>
+      </form>
+    </div>
+    <script src="../js/register.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>
