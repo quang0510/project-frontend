@@ -36,19 +36,19 @@ registerButtonElement.addEventListener("click", function(event) {
     let passwordValue = passwordInputElement.value;
     let confirmPasswordValue = confirmPasswordInputElement.value;
 
-    let hasError = false;
+    let flag = false;
 
     // Kiểm tra username
     if (usernameValue.length === 0) {
         errorUsernameEmpty.style.display = "block";
         usernameInputElement.style.border = "1px solid red";
         errorUsernameEmpty.textContent = "Tên tài khoản không được để trống";
-        hasError = true;
+        flag = true;
     } else if (!validateUsername(usernameValue)) {
         errorUsernameElement.style.display = "block";
         usernameInputElement.style.border = "1px solid red";
         errorUsernameElement.textContent = "Tên tài khoản không hợp lệ (cần có @ và .com)";
-        hasError = true;
+        flag = true;
     }
 
     // Kiểm tra password
@@ -56,12 +56,12 @@ registerButtonElement.addEventListener("click", function(event) {
         errorPasswordEmpty.style.display = "block";
         passwordInputElement.style.border = "1px solid red";
         errorPasswordEmpty.textContent = "Mật khẩu không được để trống";
-        hasError = true;
+        flag = true;
     } else if (!validatePassword(passwordValue)) {
         errorPasswordElement.style.display = "block";
         passwordInputElement.style.border = "1px solid red";
         errorPasswordElement.textContent = "Mật khẩu phải có ít nhất 6 ký tự";
-        hasError = true;
+        flag = true;
     }
 
     // Kiểm tra confirm password
@@ -69,15 +69,15 @@ registerButtonElement.addEventListener("click", function(event) {
         errorConfirmPasswordEmpty.style.display = "block";
         confirmPasswordInputElement.style.border = "1px solid red";
         errorConfirmPasswordEmpty.textContent = "Xác nhận mật khẩu không được để trống";
-        hasError = true;
+        flag = true;
     } else if (passwordValue !== confirmPasswordValue) {
         errorConfirmPasswordElement.style.display = "block";
         confirmPasswordInputElement.style.border = "1px solid red";
         errorConfirmPasswordElement.textContent = "Mật khẩu và xác nhận mật khẩu không khớp";
-        hasError = true;
+        flag = true;
     }
 
-    if (hasError) {
+    if (flag) {
         return;
     }
 
