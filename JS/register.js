@@ -2,8 +2,17 @@ let usernameInputElement = document.querySelector("#usernameInput");
 let passwordInputElement = document.querySelector("#passwordInput");
 let confirmPasswordInputElement = document.querySelector("#confirmPasswordInput");
 let registerButtonElement = document.querySelector("#registerButton");
+
 let errorElement = document.querySelectorAll(".error");
+let errorUsernameElement = errorElement[0];
+let errorPasswordElement = errorElement[1];
+let errorConfirmPasswordElement = errorElement[2];
+
 let errorEmptyElement = document.querySelectorAll(".errorEmpty");
+let errorUsernameEmpty = errorEmptyElement[0];
+let errorPasswordEmpty = errorEmptyElement[1];
+let errorConfirmPasswordEmpty = errorEmptyElement[2];
+
 let userLocals = JSON.parse(localStorage.getItem("users")) || [];
 
 if (userLocals.length > 0) {
@@ -22,80 +31,79 @@ function validatePassword(passwordValue) {
 registerButtonElement.addEventListener("click", function(event) {
     event.preventDefault();
     errorDisable();
-    
-    let passwordValue = passwordInputElement.value;
+
     let usernameValue = usernameInputElement.value;
+    let passwordValue = passwordInputElement.value;
     let confirmPasswordValue = confirmPasswordInputElement.value;
 
     let hasError = false;
 
-    // kiểm tra độ hợp lệ của thông tin
+    // Kiểm tra username
     if (usernameValue.length === 0) {
-        errorEmptyElement[0].style.display = "block";
+        errorUsernameEmpty.style.display = "block";
         usernameInputElement.style.border = "1px solid red";
-        errorEmptyElement[0].textContent = "Tên tài khoản không được để trống";
+        errorUsernameEmpty.textContent = "Tên tài khoản không được để trống";
         hasError = true;
     } else if (!validateUsername(usernameValue)) {
-        // Kiểm tra tên tài khoản hợp lệ (có @ và kết thúc bằng .com)
-        errorElement[0].style.display = "block";  // Tên tài khoản không hợp lệ
+        errorUsernameElement.style.display = "block";
         usernameInputElement.style.border = "1px solid red";
-        errorElement[0].textContent = "Tên tài khoản không hợp lệ (cần có @ và .com)";
+        errorUsernameElement.textContent = "Tên tài khoản không hợp lệ (cần có @ và .com)";
         hasError = true;
     }
 
+    // Kiểm tra password
     if (passwordValue.length === 0) {
-        errorEmptyElement[1].style.display = "block";
+        errorPasswordEmpty.style.display = "block";
         passwordInputElement.style.border = "1px solid red";
-        errorEmptyElement[1].textContent = "Mật khẩu không được để trống";
+        errorPasswordEmpty.textContent = "Mật khẩu không được để trống";
         hasError = true;
     } else if (!validatePassword(passwordValue)) {
-        // Kiểm tra mật khẩu có ít nhất 6 ký tự
-        errorElement[1].style.display = "block";
+        errorPasswordElement.style.display = "block";
         passwordInputElement.style.border = "1px solid red";
-        errorElement[1].textContent = "Mật khẩu phải có ít nhất 6 ký tự";
+        errorPasswordElement.textContent = "Mật khẩu phải có ít nhất 6 ký tự";
         hasError = true;
     }
 
+    // Kiểm tra confirm password
     if (confirmPasswordValue.length === 0) {
-        errorEmptyElement[2].style.display = "block";
+        errorConfirmPasswordEmpty.style.display = "block";
         confirmPasswordInputElement.style.border = "1px solid red";
-        errorEmptyElement[2].textContent = "Xác nhận mật khẩu không được để trống";
+        errorConfirmPasswordEmpty.textContent = "Xác nhận mật khẩu không được để trống";
         hasError = true;
     } else if (passwordValue !== confirmPasswordValue) {
-        // Kiểm tra mật khẩu và xác nhận mật khẩu phải trùng nhau
-        errorElement[2].style.display = "block";
+        errorConfirmPasswordElement.style.display = "block";
         confirmPasswordInputElement.style.border = "1px solid red";
-        errorElement[2].textContent = "Mật khẩu và xác nhận mật khẩu không khớp";
+        errorConfirmPasswordElement.textContent = "Mật khẩu và xác nhận mật khẩu không khớp";
         hasError = true;
     }
 
-    // Nếu có lỗi thì dừng lại, không kiểm tra tài khoản tồn tại nữa
     if (hasError) {
         return;
     }
 
-    // Kiểm tra sự tồn tại của tài khoản chỉ khi thông tin hợp lệ
+    // Kiểm tra trùng tài khoản
     let userExists = userLocals.find(function(user) {
         return user.username === usernameValue;
     });
 
     if (userExists) {
-        errorElement[0].style.display = "block";
+        errorUsernameElement.style.display = "block";
         usernameInputElement.style.border = "1px solid red";
-        errorElement[0].textContent = "Tài khoản đã tồn tại";
+        errorUsernameElement.textContent = "Tài khoản đã tồn tại";
         return;
     }
 
-    // Thêm tài khoản vào localStorage nếu không có lỗi
+    // Tạo tài khoản mới
     let newUser = {
-        "id": Math.floor(Math.random() * 99),
-        "username": usernameValue,
-        "password": passwordValue,
-        "rememberLogin": 0
+        id: Math.floor(Math.random() * 99),
+        username: usernameValue,
+        password: passwordValue,
+        rememberLogin: 0
     };
 
     userLocals.push(newUser);
     localStorage.setItem("users", JSON.stringify(userLocals));
+
     Swal.fire({
         title: "Đăng ký thành công!",
         icon: "success",
@@ -104,20 +112,19 @@ registerButtonElement.addEventListener("click", function(event) {
     }).then(function () {
         window.location = "login.html";
     });
-    
 });
 
 function errorDisable() {
     usernameInputElement.style.border = "1px solid #E5E7EB";
     passwordInputElement.style.border = "1px solid #E5E7EB";
     confirmPasswordInputElement.style.border = "1px solid #E5E7EB";
-    
+
     errorEmptyElement.forEach(function(element) {
         element.style.display = "none";
     });
-    
+
     errorElement.forEach(function(element) {
         element.style.display = "none";
-        element.textContent = ""; // Xóa nội dung thông báo lỗi
+        element.textContent = "";
     });
 }

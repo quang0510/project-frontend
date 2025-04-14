@@ -108,13 +108,13 @@ function renderWarnings() {
     let transactionIndex = transactions.findIndex(element => element.month === monthValue);
 
     if (categoryIndex === -1) {
-        warningContainer.style.display = "none"; // Ẩn nếu không có tháng
+        warningContainer.style.display = "none";
         return;
     }
 
     let categories = monthlyCategories[categoryIndex].categories;
     let transactionList = transactionIndex !== -1 ? transactions[transactionIndex].transaction : [];
-    let hasExceed = false;
+    let flag = false;
 
     // Tính tổng chi tiêu cho từng danh mục và kiểm tra vượt mức
     categories.forEach(category => {
@@ -130,12 +130,12 @@ function renderWarnings() {
                 </li>
             `;
             warningList.innerHTML += warningItem;
-            hasExceed = true;
+            flag = true;
         }
     });
 
     // Nếu không có danh mục nào vượt mức, hiển thị thông báo mặc định
-    if (!hasExceed) {
+    if (!flag) {
         warningList.innerHTML = `
             <li>Chưa có danh mục nào vượt mức </li>
         `;
@@ -145,10 +145,12 @@ function renderWarnings() {
     warningContainer.style.display = "block";
 }
 
+
 // Hàm thống kê chi tiêu các tháng
 function renderStatistics() {
     let tbodyElement = document.querySelector(".statistical table tbody");
-    tbodyElement.innerHTML = ""; // Xóa nội dung cũ
+    tbodyElement.innerHTML = "";
+    
 
     // Duyệt qua tất cả các tháng trong monthlyCategories
     monthlyCategories.forEach(function(monthData) {
@@ -661,16 +663,19 @@ submitHistoryButtonElement.addEventListener("click", function(event) {
     event.preventDefault();
    
     let searchHistoryValue = searchHistoryInputElement.value.trim();
-
+    
+   
     if (searchHistoryValue.length === 0) {
         renderHistory();
         return;
     }
 
+
     searchHistory(searchHistoryValue);
 });
 
 function searchHistory(searchValue) {
+
     let monthValue = monthInputElement.value;
     let historyIndex = transactions.findIndex(function(element) {
         return element.month === monthValue;
@@ -693,7 +698,7 @@ function searchHistory(searchValue) {
             return false;
         });
 
-        // Hiển thị toàn bộ kết quả tìm kiếm mà không phân trang
+        // Hiển thị toàn bộ kết quả tìm kiếm 
         if (filteredTransactions.length > 0) {
             let htmls = filteredTransactions.map(function(transaction) {
                 let categoryIndex = monthlyCategories.findIndex(function(element) {
@@ -709,8 +714,8 @@ function searchHistory(searchValue) {
                     </li>`;
             });
             historyListElement.innerHTML = htmls.join("");
-            addDeleteEventForHistory(); // Gắn sự kiện xóa cho kết quả tìm kiếm
-            document.querySelector(".pagination").innerHTML = ""; // Xóa phân trang
+            addDeleteEventForHistory();
+            document.querySelector(".pagination").innerHTML = "";
         } else {
             historyListElement.innerHTML = "<li>Không có giao dịch phù hợp với tìm kiếm</li>";
             document.querySelector(".pagination").innerHTML = "";
@@ -720,6 +725,7 @@ function searchHistory(searchValue) {
         document.querySelector(".pagination").innerHTML = "";
     }
 }
+
 //
 
 function renderHistory(filteredTransactions, historyIndex) {
@@ -750,7 +756,6 @@ function renderHistory(filteredTransactions, historyIndex) {
         document.querySelector(".pagination").innerHTML = "";
     }
 }
-
 
 
 // Sắp xếp lịch sử giao dịch theo giá tiền
